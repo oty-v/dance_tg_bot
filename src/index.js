@@ -5,6 +5,7 @@ const { EnterValueScene, EnterValueRUScene, EnterValueUAScene } = require('../sc
 const { PartsScene } = require('../scenes/PartsScene');
 const { LessonsScene } = require('../scenes/LessonsScene');
 const development = require('./core/development');
+const production = require('./core/prodaction');
 
 // Enable graceful stop
 process.once('SIGINT', () => bot.stop('SIGINT'));
