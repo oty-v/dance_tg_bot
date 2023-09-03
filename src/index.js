@@ -1,14 +1,14 @@
 require('dotenv').config();
 const { Telegraf, Scenes, session } = require('telegraf');
-const { LessonsScene } = require('./scenes/LessonsScene');
-const { start, edit, about, lessons, parts, create, destroy, end, skip } = require('./commands/main');
-const { EnterValueScene, EnterValueRUScene, EnterValueUAScene } = require('./scenes/EnterValueScene');
-const { PartsScene } = require('./scenes/PartsScene');
+const { start, edit, about, lessons, parts, create, destroy, end, skip } = require('../commands/main');
+const { EnterValueScene, EnterValueRUScene, EnterValueUAScene } = require('../scenes/EnterValueScene');
+const { PartsScene } = require('../scenes/PartsScene');
+const { LessonsScene } = require('../scenes/LessonsScene');
+const development = require('./core/development');
 
 // Enable graceful stop
 process.once('SIGINT', () => bot.stop('SIGINT'));
 process.once('SIGTERM', () => bot.stop('SIGTERM'));
-
 const BOT_TOKEN = process.env.BOT_TOKEN || '';
 const ENVIRONMENT = process.env.NODE_ENV || '';
 const ADMIN_ID = process.env.ADMIN_ID || '';
@@ -29,6 +29,7 @@ const stage = new Scenes.Stage([
     EnterValueUAScene
 ]);
 
+console.log('test'); 
 bot.use(adminMiddleware);
 bot.use(session({ collectionName: 'session' }));
 bot.use(stage.middleware());

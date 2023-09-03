@@ -29,7 +29,6 @@ const saveLesson = async(ctx) => {
         });
     }
     if (in_list.includes(changed_field)) {
-        console.log(lang, "lessons", lesson_id, {[changed_field]: text})
         return await setDataSubCollection(lang, "lessons", lesson_id, {[changed_field]: text})
     }
 }
@@ -43,7 +42,6 @@ const createLesson = async(ctx) => {
         .reduce((prev, cur) => prev["document_id"] > cur["document_id"]
             ? prev
             : cur, {"document_id": undefined});
-    console.log(maxLesson);
     const lesson_id = (maxLesson.document_id === undefined)
         ? 0
         : (+ maxLesson.document_id) + 1;

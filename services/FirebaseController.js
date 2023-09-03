@@ -7,7 +7,7 @@ const { getStorage } = require('firebase-admin/storage');
 const serviceAccount = require('./../config/firebase.js');
 const { convertToWebP } = require('./FileController');
 const storageUrl = process.env.FIREBASE_STORAGE;
-console.log(serviceAccount());
+
 initializeApp({
   credential: cert(serviceAccount()),
   storageBucket: storageUrl
