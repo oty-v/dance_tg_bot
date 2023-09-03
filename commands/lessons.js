@@ -40,7 +40,7 @@ const enter = async (ctx) => {
             })
             .catch((err)=>{
                 console.log(err)
-                ctx.reply('Ошибка', endOptions)
+                ctx.reply(`Ошибка: ${err}`, endOptions)
             })
         }
     }

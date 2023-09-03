@@ -32,7 +32,7 @@ const enterUA = (ctx) => {
     }
 }
 
-const value = async (ctx) => {
+const value = (ctx) => {
     ctx.session.data.lang = "ru"
     ctx.session.data.save(ctx)
     .then(()=>{
@@ -49,7 +49,7 @@ const value = async (ctx) => {
     })
     .catch((err)=>{
         console.log(err)
-        ctx.reply('Ошибка', endOptions)
+        ctx.reply(`Ошибка: ${err}`, endOptions)
     })
 }
 

@@ -30,7 +30,6 @@ const stage = new Scenes.Stage([
     EnterValueUAScene
 ]);
 
-console.log('test'); 
 bot.use(adminMiddleware);
 bot.use(session({ collectionName: 'session' }));
 bot.use(stage.middleware());

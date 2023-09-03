@@ -12,7 +12,7 @@ const end = async (ctx) => {
     await ctx.deleteMessage();
     await ctx.scene.leave()
     ctx.session.data = {};
-    await ctx.reply('Добро пожаловать', startOptions);
+    await ctx.reply('Пока');
 }
 
 const create = async (ctx) => {
@@ -30,15 +30,21 @@ const destroy = async (ctx) => {
     await ctx.editMessageText('Выбери страницу на которой будут происходить изменения', createPagesOptions)
 }
 
-const about = async (ctx) => {
+const about = (ctx) => {
     ctx.session.data.page = 'about';
-    const content = await getPageContent('about');
-    ctx.session.data.content_now = 
-        `Информация на данной странице сейчас:\n\n`+
-        `<b>На Русском:</b>\n\n<i>${limitStr(content.ru.info, 250)}</i>\n\n`+
-        `<b>На Украинском:</b>\n\n<i>${limitStr(content.ua.info, 250)}</i>`;
-    ctx.session.data.save = saveAbout;
-    await ctx.scene.enter('value_ru')
+    getPageContent('about')
+    .then((content)=>{
+        ctx.session.data.content_now = 
+            `Информация на данной странице сейчас:\n\n`+
+            `<b>На Русском:</b>\n\n<i>${limitStr(content.ru.info, 250)}</i>\n\n`+
+            `<b>На Украинском:</b>\n\n<i>${limitStr(content.ua.info, 250)}</i>`;
+        ctx.session.data.save = saveAbout;
+        ctx.scene.enter('value_ru')
+    })
+    .catch((err)=>{
+        console.log(err);
+        ctx.reply(`Ошибка: ${err}`, endOptions);
+    })
 }
 
 const lessons = async (ctx) => {
