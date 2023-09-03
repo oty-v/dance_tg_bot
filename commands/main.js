@@ -31,8 +31,8 @@ const destroy = async (ctx) => {
 }
 
 const about = (ctx) => {
-    ctx.session.data.page = 'about';
     ctx.reply(`Ctx: ${ctx}`);
+    ctx.session.data.page = 'about';
     getPageContent('about')
     .then((content)=>{
         ctx.session.data.content_now = 
