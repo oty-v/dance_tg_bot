@@ -1,4 +1,3 @@
-import { startVercel } from '../src';
 const { startVercel } = require('../src');
 
 async function handle(req, res) {

@@ -57,4 +57,4 @@ const startVercel = async (req, res) => {
 //dev mode
 ENVIRONMENT !== 'production' && development(bot);
 
-module.exports = startVercel;
+module.exports = {startVercel};
