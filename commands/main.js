@@ -31,9 +31,13 @@ const destroy = async (ctx) => {
 }
 
 const about = (ctx) => {
+    try {
+        ctx.session.data.page = 'about';
+      } catch (err) {
+        ctx.reply(`Ошибка: ${JSON.stringify(err)}`, endOptions);
+      }
     getPageContent('about')
     .then((content)=>{
-        ctx.session.data.page = 'about';
         ctx.session.data.content_now = 
             `Информация на данной странице сейчас:\n\n`+
             `<b>На Русском:</b>\n\n<i>${limitStr(content.ru.info, 250)}</i>\n\n`+
@@ -42,7 +46,6 @@ const about = (ctx) => {
         ctx.scene.enter('value_ru')
     })
     .catch((err)=>{
-        console.log(err);
         ctx.reply(`Ошибка: ${err}`, endOptions);
     })
 }
