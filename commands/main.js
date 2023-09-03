@@ -31,10 +31,9 @@ const destroy = async (ctx) => {
 }
 
 const about = (ctx) => {
-    ctx.reply(`Ctx: ${ctx}`);
-    ctx.session.data.page = 'about';
     getPageContent('about')
     .then((content)=>{
+        ctx.session.data.page = 'about';
         ctx.session.data.content_now = 
             `Информация на данной странице сейчас:\n\n`+
             `<b>На Русском:</b>\n\n<i>${limitStr(content.ru.info, 250)}</i>\n\n`+
