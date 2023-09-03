@@ -32,6 +32,7 @@ const destroy = async (ctx) => {
 
 const about = (ctx) => {
     ctx.session.data.page = 'about';
+    ctx.reply(`Ctx: ${ctx}`);
     getPageContent('about')
     .then((content)=>{
         ctx.session.data.content_now = 
