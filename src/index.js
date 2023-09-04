@@ -37,7 +37,8 @@ bot.use(stage.middleware());
 
 bot.telegram.setMyCommands([
     {command: "/start", description: "Начать"},
-    {command: "/end", description: "Выйти"}
+    {command: "/end", description: "Выйти"},
+    {command: "/test", description: "Test"}
 ])
 
 bot.start(start)
