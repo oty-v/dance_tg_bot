@@ -16,15 +16,11 @@ const production = async (
     await bot.telegram.setWebhook(`${VERCEL_URL}/api`);
   }
 
-  await bot.launch();
-
-  process.once('SIGINT', () => bot.stop('SIGINT'));
-  process.once('SIGTERM', () => bot.stop('SIGTERM'));
-  // if (req.method === 'POST') {
-  //   await bot.handleUpdate(req.body, res);
-  // } else {
-  //   res.status(200).json('Listening to bot events...');
-  // }
+  if (req.method === 'POST') {
+    await bot.handleUpdate(req.body, res);
+  } else {
+    res.status(200).json('Listening to bot events...');
+  }
 };
 
 module.exports = production;
