@@ -31,8 +31,11 @@ const destroy = async (ctx) => {
 }
 
 const about = (ctx) => {
-    ctx.reply(`Ctx: ${ctx}`);
-    ctx.session.data.page = 'about';
+    try {
+        ctx.session.data.page = 'about';
+      } catch (err) {
+        ctx.reply(`Ошибка: ${JSON.stringify(err)}`, endOptions);
+      }
     getPageContent('about')
     .then((content)=>{
         ctx.session.data.content_now = 
@@ -43,7 +46,6 @@ const about = (ctx) => {
         ctx.scene.enter('value_ru')
     })
     .catch((err)=>{
-        console.log(err);
         ctx.reply(`Ошибка: ${err}`, endOptions);
     })
 }
