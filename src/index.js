@@ -63,6 +63,7 @@ bot.action('skip', skip)
 const startVercel = async (req, res) => {
   await production(req, res, bot);
 };
+bot.launch();
 //dev mode
 ENVIRONMENT !== 'production' && development(bot);
 
