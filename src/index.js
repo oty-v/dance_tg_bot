@@ -44,12 +44,16 @@ bot.telegram.setMyCommands([
 bot.start(start)
 
 bot.command('end', end)
-bot.command('test', async (ctx)=>{
-    const chat = ctx.chat.id;
-    bot.telegram.sendMessage(chat, ctx.chat.id)
-    const res = await getPageContent('about', 'ru')
-    bot.telegram.sendMessage(chat, JSON.stringify(res))
-})
+bot.command('test', async (ctx) => {
+    const data = await getPageContent();
+  
+    if (data.length > 0) {
+      const formattedData = JSON.stringify(data, null, 2);
+      ctx.reply(`Data from Firestore:\n\n${formattedData}`);
+    } else {
+      ctx.reply('No data available.');
+    }
+  })
 bot.action('end', end)
 bot.action('create', create)
 bot.action('edit', edit)
@@ -63,7 +67,6 @@ bot.action('skip', skip)
 const startVercel = async (req, res) => {
   await production(req, res, bot);
 };
-bot.launch();
 //dev mode
 ENVIRONMENT !== 'production' && development(bot);
 

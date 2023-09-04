@@ -87,13 +87,18 @@ const getIdAndKey = async (docName, name) => {
 }
 
 const getPageContent = async (docName, lang) => {
-    if(lang){
-        return await getContent(db.collection(lang.toString()).doc(docName.toString()))
+    try {
+        if(lang){
+            return await getContent(db.collection(lang.toString()).doc(docName.toString()))
+        }
+        const res = {};
+        res["ru"] = await getContent(db.collection("ru").doc(docName.toString()))
+        res["ua"] = await getContent(db.collection("ua").doc(docName.toString()))
+        return res;
+    } catch (error) {
+        console.error('Error retrieving data:', error);
+        return [];
     }
-    const res = {};
-    res["ru"] = await getContent(db.collection("ru").doc(docName.toString()))
-    res["ua"] = await getContent(db.collection("ua").doc(docName.toString()))
-    return res;
 }
 
 const getSubPageContent = async (doc, id, lang) => {
