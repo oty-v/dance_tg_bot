@@ -42,9 +42,9 @@ bot.telegram.setMyCommands([
 bot.start(start)
 
 bot.command('end', end)
-bot.command('test', (ctx)=>{
-    console.log(ctx.session);
-    ctx.reply(JSON.stringify(ctx.session))
+bot.command('test', async (ctx)=>{
+    const res = await getPageContent('about')
+    await ctx.reply(JSON.stringify(res))
 })
 bot.action('end', end)
 bot.action('create', create)
