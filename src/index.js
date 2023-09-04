@@ -43,7 +43,7 @@ bot.start(start)
 
 bot.command('end', end)
 bot.command('test', async (ctx)=>{
-    const res = await getPageContent('about')
+    const res = await getPageContent('about', 'ru')
     await ctx.reply(JSON.stringify(res))
 })
 bot.action('end', end)
