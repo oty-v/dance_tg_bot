@@ -1,8 +1,11 @@
+const { session } = require('telegraf');
 const { endOptions } = require('../../buttons');
 const { uploadFileFromURL } = require('../../services/FirebaseController');
+const save = require('../save');
+const { addValue } = require('../lessons');
 
 const enter = (ctx) => {
-    if (ctx.session.data.next) {
+    if (session.next) {
         ctx.reply('Введите значение')
     } else {
         ctx.editMessageText('Введите значение')
@@ -10,13 +13,13 @@ const enter = (ctx) => {
 }
 
 const enterRU = (ctx) => {
-    if (ctx.session.data.content_now) {
+    if (session.content_now) {
         ctx.deleteMessage();
-        ctx.replyWithHTML(ctx.session.data.content_now, endOptions).then(()=>{
+        ctx.replyWithHTML(session.content_now, endOptions).then(()=>{
             ctx.reply('Введите значение на русском')
         }).catch()
     } else {
-        if (ctx.session.data.next) {
+        if (session.next) {
             ctx.reply('Введите значение на русском')
         } else {
             ctx.editMessageText('Введите значение на русском', endOptions)
@@ -25,7 +28,7 @@ const enterRU = (ctx) => {
 }
 
 const enterUA = (ctx) => {
-    if (ctx.session.data.next) {
+    if (session.next) {
         ctx.reply('Введите значение на украинском')
     } else {
         ctx.reply('Введите значение на украинском', endOptions)
@@ -33,16 +36,16 @@ const enterUA = (ctx) => {
 }
 
 const value = (ctx) => {
-    ctx.session.data.lang = "ru"
-    ctx.session.data.save(ctx)
+    session.lang = "ru"
+    save(session.page, ctx)
     .then(()=>{
-        ctx.session.data.lang = "ua"
-        ctx.session.data.save(ctx)
+        session.lang = "ua"
+        save(ctx)
     })
     .then(()=>ctx.reply('Изменения приняты'))
     .then(()=>{
-        if(ctx.session.data.next){
-            ctx.session.data.next(ctx)
+        if(session.next){
+            addValue(ctx)
         } else {
             ctx.scene.leave()
         }
@@ -54,8 +57,8 @@ const value = (ctx) => {
 }
 
 const valueRU = async (ctx) => {
-    ctx.session.data.lang = "ru";
-    ctx.session.data.save(ctx)
+    session.lang = "ru";
+    save(session.page, ctx)
     .then(()=>ctx.reply('Изменения приняты'))
     .then(()=>ctx.scene.enter('value_ua'))
     .catch((err)=>{
@@ -65,13 +68,12 @@ const valueRU = async (ctx) => {
 }
 
 const valueUA = async (ctx) => {
-    const next = ctx.session.data.next ? ctx.session.data.next : ctx.scene.leave;
-    ctx.session.data.lang = "ua";
-    ctx.session.data.save(ctx)
+    session.lang = "ua";
+    save(session.page, ctx)
     .then(()=>ctx.reply('Изменения приняты'))
     .then(()=>{
-        if(ctx.session.data.next){
-            ctx.session.data.next(ctx)
+        if(session.next){
+            addValue(ctx)
         } else {
             ctx.scene.leave()
         }
@@ -82,8 +84,8 @@ const valueUA = async (ctx) => {
     })
 }
 
-const document = async (ctx) => {
-    if(ctx.session.data.changed_field==='image'){
+const document = async (ctx, session) => {
+    if(session.changed_field==='image'){
         if(ctx.update.message.document){
             const {file_id: fileId} = ctx.update.message.document;
             const fileUrl = await ctx.telegram.getFileLink(fileId);

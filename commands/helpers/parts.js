@@ -1,12 +1,13 @@
 const {getSubPageContent, setDataSubCollection, deleteFile} = require("../../services/FirebaseController");
+const { value } = require("./main");
 
-const savePart = async(ctx) => {
-    const lang = ctx.session.data.lang;
-    const changed_field = ctx.session.data.changed_field;
-    const lesson_id = ctx.session.data.lesson_id;
-    const part_key = ctx.session.data.part_key;
-    const part_id = ctx.session.data.part_id;
-    if (ctx.session.data.changed_field==='image') {
+const savePart = async(ctx, session) => {
+    const lang = session.data.lang;
+    const changed_field = session.data.changed_field;
+    const lesson_id = session.data.lesson_id;
+    const part_key = session.data.part_key;
+    const part_id = session.data.part_id;
+    if (session.data.changed_field==='image') {
         uploadFileFromURL(ctx.message.text, lesson_id, part_id)
         .then((path)=>{
             ctx.message.text = path;
@@ -29,9 +30,9 @@ const savePart = async(ctx) => {
     })
 }
 
-const createPart = async(ctx) => {
-    const lang = ctx.session.data.lang;
-    const lesson_id = ctx.session.data.lesson_id;
+const createPart = async(session) => {
+    const lang = session.data.lang;
+    const lesson_id = session.data.lesson_id;
     const oldContent = await getSubPageContent('lessons', lesson_id, lang);
 
     if (oldContent.parts === undefined) {
@@ -64,9 +65,9 @@ const createPart = async(ctx) => {
 
 }
 
-const deletePart = async(ctx) => {
-    const lesson_id = ctx.session.data.lesson_id;
-    const part_name = ctx.session.data.part;
+const deletePart = async(session) => {
+    const lesson_id = session.data.lesson_id;
+    const part_name = session.data.part;
     const res = await getSubPageContent('lessons', lesson_id)
     const old_content_ru = res.ru;
     const old_content_ua = res.ua;

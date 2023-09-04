@@ -1,13 +1,14 @@
 const {setData, setDataSubCollection, getPageContent, deleteDataSubCollection, uploadFileFromURL, deleteFile} = require('../../services/FirebaseController');
+const { value } = require('./main');
 
-const saveLesson = async(ctx) => {
-    const lang = ctx.session.data.lang;
-    const changed_field = ctx.session.data.changed_field;
-    const lesson_key = ctx.session.data.lesson_key;
-    const lesson_id = ctx.session.data.lesson_id;
+const saveLesson = async(ctx, session) => {
+    const lang = session.lang;
+    const changed_field = session.data.changed_field;
+    const lesson_key = session.data.lesson_key;
+    const lesson_id = session.data.lesson_id;
     const in_cards = ["image", "card_info", "number", "name"];
     const in_list = ["info", "price_info", "price", "time", "name"]
-    if (ctx.session.data.changed_field==='image') {
+    if (session.data.changed_field==='image') {
         uploadFileFromURL(ctx.message.text, '', lesson_id)
         .then((path)=>{
             ctx.message.text = path;
@@ -33,8 +34,8 @@ const saveLesson = async(ctx) => {
     }
 }
 
-const createLesson = async(ctx) => {
-    const lang = ctx.session.data.lang;
+const createLesson = async(session) => {
+    const lang = session.lang;
     const oldContent = await getPageContent('lessons', lang);
 
     const maxLesson = oldContent
@@ -64,8 +65,8 @@ const createLesson = async(ctx) => {
 
 }
 
-const deleteLesson = async(ctx) => {
-    const lesson_name = ctx.session.data.lesson;
+const deleteLesson = async(session) => {
+    const lesson_name = session.lesson;
     const old_content_ru = await getPageContent('lessons', 'ru');
     const old_content_ua = await getPageContent('lessons', 'ua');
     const lesson = old_content_ru

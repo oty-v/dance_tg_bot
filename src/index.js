@@ -6,6 +6,7 @@ const { PartsScene } = require('../scenes/PartsScene');
 const { LessonsScene } = require('../scenes/LessonsScene');
 const development = require('./core/development');
 const production = require('./core/prodaction');
+const { updateSession } = require('../services/MongoDBController');
 
 // Enable graceful stop
 process.once('SIGINT', () => bot.stop('SIGINT'));
