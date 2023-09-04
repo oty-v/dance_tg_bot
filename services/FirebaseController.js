@@ -91,9 +91,18 @@ const getPageContent = async (docName, lang) => {
         return await getContent(db.collection(lang.toString()).doc(docName.toString()))
     }
     const res = {};
-    res["ru"] = await getContent(db.collection("ru").doc(docName.toString()))
-    res["ua"] = await getContent(db.collection("ua").doc(docName.toString()))
-    return res;
+    getContent(db.collection("ru").doc(docName.toString()))
+    .then((response)=>{
+        res["ru"] = response;
+        getContent(db.collection("ua").doc(docName.toString()))
+    })
+    .then((response)=>{
+        res["ua"] = response;
+        return res;
+    })
+    .catch(()=>{
+        return res;
+    })
 }
 
 const getSubPageContent = async (doc, id, lang) => {

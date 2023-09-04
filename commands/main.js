@@ -31,19 +31,17 @@ const destroy = async (ctx) => {
 }
 
 const about = (ctx) => {
-    try {
-        ctx.session.data.page = 'about';
-      } catch (err) {
-        ctx.reply(`Ошибка: ${JSON.stringify(err)}`, endOptions);
-      }
+    ctx.session.data.page = 'about';
     getPageContent('about')
     .then((content)=>{
-        ctx.session.data.content_now = 
-            `Информация на данной странице сейчас:\n\n`+
-            `<b>На Русском:</b>\n\n<i>${limitStr(content.ru.info, 250)}</i>\n\n`+
-            `<b>На Украинском:</b>\n\n<i>${limitStr(content.ua.info, 250)}</i>`;
-        ctx.session.data.save = saveAbout;
-        ctx.scene.enter('value_ru')
+        if(!!content) {
+            ctx.session.data.content_now = 
+                `Информация на данной странице сейчас:\n\n`+
+                `<b>На Русском:</b>\n\n<i>${limitStr(content.ru.info, 250)}</i>\n\n`+
+                `<b>На Украинском:</b>\n\n<i>${limitStr(content.ua.info, 250)}</i>`;
+            ctx.session.data.save = saveAbout;
+            ctx.scene.enter('value_ru')
+        } else {ctx.reply(JSON.stringify(content))}
     })
     .catch((err)=>{
         ctx.reply(`Ошибка: ${err}`, endOptions);
