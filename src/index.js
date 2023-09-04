@@ -42,6 +42,10 @@ bot.telegram.setMyCommands([
 bot.start(start)
 
 bot.command('end', end)
+bot.command('test', (ctx)=>{
+    console.log(ctx.session);
+    ctx.reply(JSON.stringify(ctx.session))
+})
 bot.action('end', end)
 bot.action('create', create)
 bot.action('edit', edit)
