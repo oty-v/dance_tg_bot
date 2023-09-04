@@ -46,6 +46,7 @@ bot.start(start)
 bot.command('end', end)
 bot.command('test', async (ctx)=>{
     const chat = ctx.chat.id;
+    bot.telegram.sendMessage(chat, ctx.chat.id)
     const res = await getPageContent('about', 'ru')
     bot.telegram.sendMessage(chat, JSON.stringify(res))
 })
