@@ -45,7 +45,7 @@ bot.start(start)
 
 bot.command('end', end)
 bot.command('test', async (ctx) => {
-    const data = await getPageContent();
+    const data = await getPageContent("about");
   
     if (data.length > 0) {
       const formattedData = JSON.stringify(data, null, 2);
