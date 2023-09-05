@@ -84,8 +84,7 @@ const document = async (ctx) => {
     if(ctx.session.data.changed_field==='image'){
         if(ctx.update.message.document){
             const {file_id: fileId} = await ctx.update.message.document;
-            const fileUrl = await ctx.telegram.getFileLink(fileId);
-            await uploadFileFromURL(fileUrl.href)
+            await ctx.telegram.getFileLink(fileId)
             .then(async (path)=>{
                 ctx.message.text = path;
                 await value(ctx);

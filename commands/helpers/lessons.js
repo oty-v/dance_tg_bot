@@ -7,11 +7,10 @@ const saveLesson = async(ctx) => {
     const lesson_id = ctx.session.data.lesson_id;
     const in_cards = ["image", "card_info", "number", "name"];
     const in_list = ["info", "price_info", "price", "time", "name"]
-    if (ctx.session.data.changed_field==='image') {
+    if (changed_field==='image') {
         await uploadFileFromURL(ctx.message.text, '', lesson_id)
         .then(async (path)=>{
             ctx.message.text = path;
-            await value(ctx);
         })
         .catch((err)=>{
             console.log(err);

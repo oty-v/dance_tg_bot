@@ -6,11 +6,10 @@ const savePart = async(ctx) => {
     const lesson_id = ctx.session.data.lesson_id;
     const part_key = ctx.session.data.part_key;
     const part_id = ctx.session.data.part_id;
-    if (ctx.session.data.changed_field==='image') {
+    if (changed_field==='image') {
         await uploadFileFromURL(ctx.message.text, lesson_id, part_id)
         .then(async (path)=>{
             ctx.message.text = path;
-            await value(ctx);
         })
         .catch((err)=>{
             console.log(err);
