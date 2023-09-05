@@ -46,7 +46,7 @@ bot.command('test', async (ctx) => {
   const storageDestinationPath = 'files';
   const filename = 'example'; // Provide the desired filename here
   
-  uploadFileFromURL(globalFilePath,null,storageDestinationPath)
+  await uploadFileFromURL(globalFilePath,null,storageDestinationPath)
   .then((publicUrl) => {
   // Do something with the public URL
   ctx.reply(`${publicUrl}`);

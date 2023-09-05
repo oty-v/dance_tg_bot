@@ -19,12 +19,12 @@ const bucket = getStorage().bucket();
 async function uploadFileFromURL(url, destinationPath, filename) {
     
     try {
-        const response = await axios({
-            method: 'get',
-            url,
-            responseType: 'arraybuffer',
-        });
-        return response;
+        // const response = await axios({
+        //     method: 'get',
+        //     url,
+        //     responseType: 'arraybuffer',
+        // });
+        return [url, destinationPath, filename];
         // const destinationFileName = !!destinationPath ? `${destinationPath}/${filename}.webp` : `${filename}.webp`;
         // const imageBuffer = Buffer.from(response.data);
         
