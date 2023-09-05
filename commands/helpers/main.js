@@ -81,7 +81,7 @@ const valueUA = async (ctx) => {
 }
 
 const document = async (ctx) => {
-    if(true){
+    if(ctx.session.data.changed_field==='image'){
         if(ctx.update.message.document){
             const {file_id: fileId} = await ctx.update.message.document;
             await ctx.telegram.getFileLink(fileId)

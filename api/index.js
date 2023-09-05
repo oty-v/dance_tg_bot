@@ -4,7 +4,6 @@ const { end, create, edit, destroy, about, lessons, parts, skip, start } = requi
 const { LessonsScene } = require('../scenes/LessonsScene');
 const { PartsScene } = require('../scenes/PartsScene');
 const { EnterValueScene, EnterValueRUScene, EnterValueUAScene } = require('../scenes/EnterValueScene');
-const { document } = require('../commands/helpers/main');
 const VERCEL_URL = `${process.env.VERCEL_URL}`;
 const BOT_TOKEN = process.env.BOT_TOKEN || '';
 
@@ -51,7 +50,6 @@ bot.action('lessons', lessons)
 bot.action('parts', parts)
 bot.action('skip', skip)
 
-bot.on('message', document);
 // Set up webhook to receive updates
 bot.telegram.setWebhook(`${VERCEL_URL}/api`);
 
