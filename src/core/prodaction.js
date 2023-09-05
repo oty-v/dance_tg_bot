@@ -19,9 +19,9 @@ const production = async (
   try {
     // Start listening for incoming updates
     await bot.startWebhook('/api', null, 3000); // Replace with the desired port
-    if (!(req.method === 'POST')) {
-      res.status(200).json('Listening to bot events...');
-    }
+    // if (!(req.method === 'POST')) {
+    //   res.status(200).json('Listening to bot events...');
+    // }
   } catch (error) {
     console.log('Error:', error);
     res.status(500).end('Internal Server Error');
