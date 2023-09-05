@@ -82,12 +82,8 @@ bot.telegram.setMyCommands([
 bot.command('test', async (ctx) => {
   try {
     const data = await getPageContent('about', 'ru');
-    if (data.length > 0) {
-      const formattedData = JSON.stringify(data, null, 2);
-      ctx.reply(`Data from Firestore:\n\n${formattedData}`);
-    } else {
-      ctx.reply('No data available.');
-    }
+    const formattedData = JSON.stringify(data, null, 2);
+    ctx.reply(`Data from Firestore:\n\n${formattedData}`);
   } catch (error) {
     console.log('Error:', error);
     ctx.reply('Failed to get data from Firebase.');

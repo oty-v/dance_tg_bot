@@ -23,11 +23,7 @@ const production = async (
     console.log('Error:', error);
     res.status(500).end('Internal Server Error');
   }
-  // if (req.method === 'POST') {
-  //   await bot.handleUpdate(req.body, res);
-  // } else {
-  //   res.status(200).json('Listening to bot events...');
-  // }
+  res.status(200).json('Listening to bot events...');
 };
 
 module.exports = production;
