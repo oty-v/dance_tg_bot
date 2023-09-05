@@ -24,25 +24,25 @@ async function uploadFileFromURL(url, destinationPath, filename) {
             url,
             responseType: 'arraybuffer',
         });
-        return response.status
-        // const destinationFileName = !!destinationPath ? `${destinationPath}/${filename}.webp` : `${filename}.webp`;
-        // const imageBuffer = Buffer.from(response.data);
+
+        const destinationFileName = !!destinationPath ? `${destinationPath}/${filename}.webp` : `${filename}.webp`;
+        const imageBuffer = Buffer.from(response.data);
         
-        // const convertedImageBuffer = await sharp(imageBuffer)
-        // .webp()
-        // .toBuffer();
+        const convertedImageBuffer = await sharp(imageBuffer)
+        .webp()
+        .toBuffer();
         
-        // await admin
-        // .storage()
-        // .bucket()
-        // .file(destinationFileName)
-        // .save(convertedImageBuffer, {
-        //     contentType: 'image/webp',
-        // });
+        await admin
+        .storage()
+        .bucket()
+        .file(destinationFileName)
+        .save(convertedImageBuffer, {
+            contentType: 'image/webp',
+        });
         
-        // const fileUrl = `https://firebasestorage.googleapis.com/v0/b/${bucketName}/o/${encodeURIComponent(destinationFileName)}?alt=media`;
+        const fileUrl = `https://firebasestorage.googleapis.com/v0/b/${bucketName}/o/${encodeURIComponent(destinationFileName)}?alt=media`;
         
-        // return fileUrl;
+        return fileUrl;
     } catch (error) {
         console.error('Error uploading file:', error);
         throw error;
