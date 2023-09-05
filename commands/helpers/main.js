@@ -1,5 +1,4 @@
 const { endOptions } = require('../../buttons');
-const { uploadFileFromURL } = require('../../services/FirebaseController');
 
 const enter = async (ctx) => {
     if (ctx.session.data.next) {
