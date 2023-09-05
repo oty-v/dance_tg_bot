@@ -1,10 +1,9 @@
 const axios = require('axios');
-const fs = require('fs');
-const path = require('path');
 const { initializeApp, cert } = require('firebase-admin/app');
 const { getFirestore } = require('firebase-admin/firestore');
 const { getStorage } = require('firebase-admin/storage');
 const serviceAccount = require('./../config/firebase.js');
+const sharp = require('sharp');
 const storageUrl = process.env.FIREBASE_STORAGE;
 const bucketName = process.env.FIREBASE_BUCKET;
 
