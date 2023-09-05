@@ -13,8 +13,12 @@
 
 // module.exports = handle;
 
-const { Telegraf } = require('telegraf');
+const { Telegraf, Scenes, session } = require('telegraf');
 const { getPageContent } = require('../services/FirebaseController');
+const { end, create, edit, destroy, about, lessons, parts, skip } = require('../commands/main');
+const { LessonsScene } = require('../scenes/LessonsScene');
+const { PartsScene } = require('../scenes/PartsScene');
+const { EnterValueScene, EnterValueRUScene, EnterValueUAScene } = require('../scenes/EnterValueScene');
 const VERCEL_URL = `${process.env.VERCEL_URL}`;
 const BOT_TOKEN = process.env.BOT_TOKEN || '';
 
