@@ -33,7 +33,7 @@ const enter = async (ctx) => {
                     {type: 'number', name: 'number', text: 'Введите порядковый номер курса в списке'}
                 ]
                 ctx.session.data.next = addValue;
-                await ctx.reply('Введите имя курса');
+                ctx.reply('Введите имя курса');
             })
             .then(async ()=>{
                 await text('name',ctx);
@@ -61,7 +61,7 @@ const addValue = async (ctx) => {
         .catch((err)=>console.log(err))
         ctx.session.data.empty_filds.shift();
     } else {
-        await ctx.reply('Все поля заполнены и сохранены');
+        ctx.reply('Все поля заполнены и сохранены');
         await ctx.scene.leave();
     }
 }
@@ -95,7 +95,7 @@ const identifier = async (ctx) => {
             ctx.session.data.lesson = ctx.message.text
             await deleteLesson(ctx)
             .then(async ()=>{
-                await ctx.reply('Курс был успешно удалён')
+                ctx.reply('Курс был успешно удалён')
                 await ctx.scene.leave();
             })
             .catch((err)=>{

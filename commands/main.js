@@ -5,14 +5,14 @@ const { limitStr, saveAbout } = require('./helpers');
 const start = async (ctx) => {
     await ctx.scene.leave()
     ctx.session.data = {};
-    await ctx.reply('Добро пожаловать', startOptions);
+    ctx.reply('Добро пожаловать', startOptions);
 }
 
 const end = async (ctx) => {
     await ctx.deleteMessage();
     await ctx.scene.leave()
     ctx.session.data = {};
-    await ctx.reply('Пока');
+    ctx.reply('Пока');
 }
 
 const create = async (ctx) => {

@@ -7,10 +7,10 @@ const savePart = async(ctx) => {
     const part_key = ctx.session.data.part_key;
     const part_id = ctx.session.data.part_id;
     if (ctx.session.data.changed_field==='image') {
-        uploadFileFromURL(ctx.message.text, lesson_id, part_id)
-        .then((path)=>{
+        await uploadFileFromURL(ctx.message.text, lesson_id, part_id)
+        .then(async (path)=>{
             ctx.message.text = path;
-            value(ctx);
+            await value(ctx);
         })
         .catch((err)=>{
             console.log(err);
@@ -18,10 +18,10 @@ const savePart = async(ctx) => {
         })
     }
     const text = ctx.message.text;
-    getSubPageContent('lessons', lesson_id, lang).then((oldContent) => {
+    await getSubPageContent('lessons', lesson_id, lang).then(async (oldContent) => {
         if (oldContent.parts[part_key]) {
             oldContent.parts[part_key][changed_field] = text;
-            setDataSubCollection(lang, "lessons", lesson_id, oldContent)
+            await setDataSubCollection(lang, "lessons", lesson_id, oldContent)
         }
     }).catch((err) => {
         console.log(err)
@@ -55,7 +55,7 @@ const createPart = async(ctx) => {
     oldContent
         .parts
         .push(newPart);
-    return setDataSubCollection(lang, "lessons", lesson_id, oldContent).then(() => {
+    return await setDataSubCollection(lang, "lessons", lesson_id, oldContent).then(() => {
         return {
             key: oldContent.parts.length - 1,
             id: oldContent.parts.id
@@ -84,8 +84,8 @@ const deletePart = async(ctx) => {
         .splice(part_key, 1);
     old_content_ru.parts = filtered_ru;
 
-    return setDataSubCollection('ru', "lessons", lesson_id, old_content_ru).then(async() => {
-        return setDataSubCollection('ua', "lessons", lesson_id, old_content_ua)
+    return await setDataSubCollection('ru', "lessons", lesson_id, old_content_ru).then(async() => {
+        return await setDataSubCollection('ua', "lessons", lesson_id, old_content_ua)
     }).catch((res) => res)
 }
 

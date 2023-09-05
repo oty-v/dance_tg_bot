@@ -8,10 +8,10 @@ const saveLesson = async(ctx) => {
     const in_cards = ["image", "card_info", "number", "name"];
     const in_list = ["info", "price_info", "price", "time", "name"]
     if (ctx.session.data.changed_field==='image') {
-        uploadFileFromURL(ctx.message.text, '', lesson_id)
-        .then((path)=>{
+        await uploadFileFromURL(ctx.message.text, '', lesson_id)
+        .then(async (path)=>{
             ctx.message.text = path;
-            value(ctx);
+            await value(ctx);
         })
         .catch((err)=>{
             console.log(err);
@@ -20,9 +20,9 @@ const saveLesson = async(ctx) => {
     }
     const text = ctx.message.text;
     if (in_cards.includes(changed_field)) {
-        getPageContent('lessons', lang).then((oldContent) => {
+        await getPageContent('lessons', lang).then(async (oldContent) => {
             oldContent.cards[lesson_key][changed_field] = text;
-            return setData(lang, "lessons", oldContent)
+            return await setData(lang, "lessons", oldContent)
         }).catch((err) => {
             console.log(err)
             return err;
@@ -53,7 +53,7 @@ const createLesson = async(ctx) => {
     oldContent
         .cards
         .push(newCard);
-    return setData(lang, "lessons", oldContent).then(async() => {
+    return await setData(lang, "lessons", oldContent).then(async() => {
         return await setDataSubCollection(lang, "lessons", lesson_id, {})
     }).then(() => {
         return {
@@ -73,7 +73,7 @@ const deleteLesson = async(ctx) => {
         .find(card => card.name.toLowerCase() === lesson_name.toLowerCase());
         
     if (!!lesson.document_id) {
-        deleteFile(lesson.document_id);
+        await deleteFile(lesson.document_id);
     }
     const filtered_ru = old_content_ru
         .cards

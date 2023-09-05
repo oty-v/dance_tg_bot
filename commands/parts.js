@@ -6,7 +6,7 @@ const { getSubPageContent } = require("../services/FirebaseController");
 
 const enter = async (ctx) => {
     if ((ctx.session.data.change_type === 'edit')||(ctx.session.data.change_type === 'destroy')) {
-        await ctx.reply('Укажи имя урока', endOptions)
+        ctx.reply('Укажи имя урока', endOptions)
     } else if (ctx.session.data.change_type === 'create') {
         await value(ctx)
     }
@@ -25,7 +25,7 @@ const identifier = async (ctx) => {
         })
         .then(async (res)=>{
             if(res === -1){
-                await ctx.reply('Такого урока нет', endOptions)
+                ctx.reply('Такого урока нет', endOptions)
             }
         })
         .catch((err)=> {
@@ -34,11 +34,11 @@ const identifier = async (ctx) => {
             return err;
         })
         ctx.session.data.save = savePart;
-        await ctx.reply('Выбери поле', partOptions)
+        ctx.reply('Выбери поле', partOptions)
     } else if (ctx.session.data.change_type === 'destroy') {
         ctx.session.data.part = ctx.message.text
         await deletePart(ctx);
-        await ctx.reply('Успешно удалено!')
+        ctx.reply('Успешно удалено!')
         await ctx.scene.leave();
     }
 }
@@ -64,7 +64,7 @@ const value = async (ctx) => {
                 {type: 'number', name: 'number', text: 'Введите порядковый номер урока в списке'}
             ]
             ctx.session.data.next = addValue;
-            await ctx.reply('Введите название урока');
+            ctx.reply('Введите название урока');
         })
         .then(async()=>{
             await text('name',ctx);

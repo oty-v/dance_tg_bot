@@ -1,7 +1,5 @@
-const { bot } = require('../../api');
 const { endOptions } = require('../../buttons');
 const { uploadFileFromURL } = require('../../services/FirebaseController');
-const CHAT_ID = process.env.CHAT_ID;
 
 const enter = async (ctx) => {
     if (ctx.session.data.next) {
