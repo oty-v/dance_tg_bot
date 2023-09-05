@@ -1,5 +1,7 @@
+const { bot } = require('../../api');
 const { endOptions } = require('../../buttons');
 const { uploadFileFromURL } = require('../../services/FirebaseController');
+const CHAT_ID = process.env.CHAT_ID;
 
 const enter = async (ctx) => {
     if (ctx.session.data.next) {
@@ -13,7 +15,7 @@ const enterRU = async (ctx) => {
     if (ctx.session.data.content_now) {
         await ctx.deleteMessage();
         await ctx.replyWithHTML(ctx.session.data.content_now, endOptions)
-        await ctx.reply('Введите значение на русском')
+        await bot.telegram.sendMessage(CHAT_ID, 'Введите значение на русском')
     } else {
         if (ctx.session.data.next) {
             await ctx.reply('Введите значение на русском')

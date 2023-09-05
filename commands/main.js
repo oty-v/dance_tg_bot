@@ -34,12 +34,12 @@ const about = async (ctx) => {
     ctx.session.data.page = 'about';
     await getPageContent('about')
     .then(async (content)=>{
-        await ctx.scene.enter('value_ru')
         ctx.session.data.content_now = 
                 `Информация на данной странице сейчас:\n\n`+
                 `<b>На Русском:</b>\n\n<i>${limitStr(content.ru.info, 250)}</i>\n\n`+
                 `<b>На Украинском:</b>\n\n<i>${limitStr(content.ua.info, 250)}</i>`;
         ctx.session.data.save = saveAbout;
+        await ctx.scene.enter('value_ru')
     })
     .catch((err)=>{
         ctx.reply(`Ошибка: ${err}`, endOptions);

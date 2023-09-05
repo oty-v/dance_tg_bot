@@ -72,3 +72,5 @@ bot.telegram.setWebhook(`${VERCEL_URL}/api`);
 bot.startWebhook('/api', null, 3000); // Replace with the desired port
 
 console.log('Bot is listening...');
+
+module.exports = {bot}
