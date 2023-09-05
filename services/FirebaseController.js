@@ -31,9 +31,7 @@ async function uploadFileFromURL(url, destinationPath, filename) {
         .webp()
         .toBuffer();
         
-        await db
-        .storage()
-        .bucket()
+        await bucket
         .file(destinationFileName)
         .save(convertedImageBuffer, {
             contentType: 'image/webp',
