@@ -1,84 +1,49 @@
-// require('dotenv').config();
-// const { Telegraf, Scenes, session } = require('telegraf');
-// const { start, edit, about, lessons, parts, create, destroy, end, skip } = require('../commands/main');
-// const { EnterValueScene, EnterValueRUScene, EnterValueUAScene } = require('../scenes/EnterValueScene');
-// const { PartsScene } = require('../scenes/PartsScene');
-// const { LessonsScene } = require('../scenes/LessonsScene');
-const development = require('./core/development');
-// const production = require('./core/prodaction');
-// const { getPageContent } = require('../services/FirebaseController');
-
-// // Enable graceful stop
-// process.once('SIGINT', () => bot.stop('SIGINT'));
-// process.once('SIGTERM', () => bot.stop('SIGTERM'));
-// const BOT_TOKEN = process.env.BOT_TOKEN || '';
-// const ENVIRONMENT = process.env.NODE_ENV || '';
-// const ADMIN_ID = process.env.ADMIN_ID || '';
-
-// const bot = new Telegraf(BOT_TOKEN);
-
-// const adminMiddleware = (ctx, next) => {
-//     if(ctx.from.id == ADMIN_ID) {
-//         next()
-//     }
-// }
-
-// const stage = new Scenes.Stage([
-//     LessonsScene,
-//     PartsScene,
-//     EnterValueScene,
-//     EnterValueRUScene,
-//     EnterValueUAScene
-// ]);
-
-// bot.use(adminMiddleware);
-// bot.use(session({ collectionName: 'session' }));
-// bot.use(stage.middleware());
-
-// bot.telegram.setMyCommands([
-//     {command: "/start", description: "Начать"},
-//     {command: "/end", description: "Выйти"},
-//     {command: "/test", description: "Test"}
-// ])
-
-// bot.start(start)
-
-// bot.command('end', end)
-// bot.command('test', async (ctx) => {
-//     const data = await getPageContent("about");
-  
-//     if (data.length > 0) {
-//       const formattedData = JSON.stringify(data, null, 2);
-//       ctx.reply(`Data from Firestore:\n\n${formattedData}`);
-//     } else {
-//       ctx.reply('No data available.');
-//     }
-//   })
-// bot.action('end', end)
-// bot.action('create', create)
-// bot.action('edit', edit)
-// bot.action('destroy', destroy)
-// bot.action('about', about)
-// bot.action('lessons', lessons)
-// bot.action('parts', parts)
-// bot.action('skip', skip)
-
-
-const { Telegraf } = require('telegraf');
-const { getPageContent } = require('../services/FirebaseController');
-const production = require('./core/prodaction');
 require('dotenv').config();
+const { Telegraf, Scenes, session } = require('telegraf');
+const { start, edit, about, lessons, parts, create, destroy, end, skip } = require('../commands/main');
+const { EnterValueScene, EnterValueRUScene, EnterValueUAScene } = require('../scenes/EnterValueScene');
+const { PartsScene } = require('../scenes/PartsScene');
+const { LessonsScene } = require('../scenes/LessonsScene');
+const development = require('./core/development');
+const production = require('./core/prodaction');
+const { getPageContent } = require('../services/FirebaseController');
 
-// Initialize Telegraf bot using the Telegram API token
-const bot = new Telegraf(process.env.BOT_TOKEN);
+// Enable graceful stop
+process.once('SIGINT', () => bot.stop('SIGINT'));
+process.once('SIGTERM', () => bot.stop('SIGTERM'));
+const BOT_TOKEN = process.env.BOT_TOKEN || '';
+const ENVIRONMENT = process.env.NODE_ENV || '';
+const ADMIN_ID = process.env.ADMIN_ID || '';
 
-// Register a webhook URL for Telegram updates
-bot.telegram.setWebhook(`${process.env.VERCEL_URL}/api/telegram/webhook`);
+const bot = new Telegraf(BOT_TOKEN);
+
+const adminMiddleware = (ctx, next) => {
+    if(ctx.from.id == ADMIN_ID) {
+        next()
+    }
+}
+
+const stage = new Scenes.Stage([
+    LessonsScene,
+    PartsScene,
+    EnterValueScene,
+    EnterValueRUScene,
+    EnterValueUAScene
+]);
+
+bot.use(adminMiddleware);
+bot.use(session({ collectionName: 'session' }));
+bot.use(stage.middleware());
 
 bot.telegram.setMyCommands([
-  {command: "/test", description: "Test"}
+    {command: "/start", description: "Начать"},
+    {command: "/end", description: "Выйти"},
+    {command: "/test", description: "Test"}
 ])
-// Telegram webhook handler
+
+bot.start(start)
+
+bot.command('end', end)
 bot.command('test', async (ctx) => {
   try {
     const data = await getPageContent('about', 'ru');
@@ -88,7 +53,15 @@ bot.command('test', async (ctx) => {
     console.log('Error:', error);
     ctx.reply('Failed to get data from Firebase.');
   }
-});
+  })
+bot.action('end', end)
+bot.action('create', create)
+bot.action('edit', edit)
+bot.action('destroy', destroy)
+bot.action('about', about)
+bot.action('lessons', lessons)
+bot.action('parts', parts)
+bot.action('skip', skip)
 
 
 //prod mode (Vercel)
