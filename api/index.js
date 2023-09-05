@@ -54,14 +54,7 @@ bot.start(start)
 
 bot.command('end', end)
 bot.command('test', async (ctx) => {
-try {
-  const data = await getPageContent('about', 'ru');
-  const formattedData = JSON.stringify(data, null, 2);
-  ctx.reply(`Data from Firestore:\n\n${formattedData}`);
-} catch (error) {
-  console.log('Error:', error);
-  ctx.reply('Failed to get data from Firebase.');
-}
+  ctx.reply(`Data from Firestore:\n\n${ctx.chat.id}`);
 })
 bot.action('end', end)
 bot.action('create', create)
