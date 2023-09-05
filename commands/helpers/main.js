@@ -14,8 +14,13 @@ const enter = async (ctx) => {
 const enterRU = async (ctx) => {
     if (ctx.session.data.content_now) {
         await ctx.deleteMessage();
-        // await ctx.replyWithHTML(ctx.session.data.content_now, endOptions)
-        await bot.telegram.sendMessage(CHAT_ID, 'Введите значение на русском')
+        await ctx.replyWithHTML(ctx.session.data.content_now, endOptions)
+        .then(async () => {
+            await ctx.reply('Введите значение на русском')
+        })
+        .catch(async () => {
+            await ctx.reply('Ошибка')
+        })
     } else {
         if (ctx.session.data.next) {
             await ctx.reply('Введите значение на русском')
