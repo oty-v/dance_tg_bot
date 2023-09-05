@@ -14,12 +14,12 @@ const enter = async (ctx) => {
         if (!ctx.session.data.change) {
             ctx.session.data.change = {};
             ctx.session.data.lang = 'ru';
-            createLesson(ctx)
-            .then(()=>{
+            await createLesson(ctx)
+            .then(async ()=>{
                 ctx.session.data.lang = 'ua';
-                return createLesson(ctx)
+                return await createLesson(ctx)
             })
-            .then((res)=>{
+            .then(async (res)=>{
                 ctx.session.data.lesson_id = res.id
                 ctx.session.data.lesson_key = res.key
                 ctx.session.data.save = saveLesson;
@@ -33,10 +33,10 @@ const enter = async (ctx) => {
                     {type: 'number', name: 'number', text: 'Введите порядковый номер курса в списке'}
                 ]
                 ctx.session.data.next = addValue;
-                ctx.reply('Введите имя курса');
+                await ctx.reply('Введите имя курса');
             })
-            .then(()=>{
-                text('name',ctx);
+            .then(async ()=>{
+                await text('name',ctx);
             })
             .catch((err)=>{
                 console.log(err)
@@ -51,27 +51,27 @@ const addValue = async (ctx) => {
     if (empty_filds.length !== 0) {
         await ctx.scene.leave()
         await ctx.reply(empty_filds[0].text, empty_filds[0].buttons)
-        .then(()=>{
+        .then(async ()=>{
             if (empty_filds[0].type === 'text') {
-                text(empty_filds[0].name, ctx)
+                await text(empty_filds[0].name, ctx)
             } else {
-                number(empty_filds[0].name, ctx)
+                await number(empty_filds[0].name, ctx)
             }
         })
         .catch((err)=>console.log(err))
         ctx.session.data.empty_filds.shift();
     } else {
-        ctx.reply('Все поля заполнены и сохранены');
-        ctx.scene.leave();
+        await ctx.reply('Все поля заполнены и сохранены');
+        await ctx.scene.leave();
     }
 }
 
 const identifier = async (ctx) => {
     if (ctx.session.data.page === 'parts') {
-        getIdAndKey("lessons", ctx.message.text)
-        .then((res)=>{
+        await getIdAndKey("lessons", ctx.message.text)
+        .then(async (res)=>{
             ctx.session.data.lesson_id = res.id
-            ctx.scene.enter('parts')
+            await ctx.scene.enter('parts')
         })
         .catch((err)=>{
             console.log(err)
@@ -79,24 +79,24 @@ const identifier = async (ctx) => {
         })
     } else {
         if (ctx.session.data.change_type === 'edit') {
-            getIdAndKey("lessons", ctx.message.text)
+            await getIdAndKey("lessons", ctx.message.text)
             .then((res)=>{
                 ctx.session.data.lesson_id = res.id
                 ctx.session.data.lesson_key = res.key
                 ctx.session.data.old_content = res.content
                 ctx.session.data.save = saveLesson;
             })
-            .then(()=>ctx.reply('Выбери поле', lessonOptions))
+            .then(async ()=>await ctx.reply('Выбери поле', lessonOptions))
             .catch((err)=>{
                 console.log(err)
                 ctx.reply('Ошибка', endOptions)
             })
         } else if (ctx.session.data.change_type === 'destroy') {
             ctx.session.data.lesson = ctx.message.text
-            deleteLesson(ctx)
-            .then(()=>{
-                ctx.reply('Курс был успешно удалён')
-                ctx.scene.leave();
+            await deleteLesson(ctx)
+            .then(async ()=>{
+                await ctx.reply('Курс был успешно удалён')
+                await ctx.scene.leave();
             })
             .catch((err)=>{
                 console.log(err)
