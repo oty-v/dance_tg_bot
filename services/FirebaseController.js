@@ -17,29 +17,35 @@ const db = getFirestore();
 const bucket = getStorage().bucket();
 
 async function uploadFileFromURL(url, destinationPath, filename) {
-    const response = await axios({
-        method: 'get',
-        url,
-        responseType: 'arraybuffer',
-    });
-    const destinationFileName = !!destinationPath ? `${destinationPath}/${filename}` : `${filename}`;
-    const imageBuffer = Buffer.from(response.data);
     
-    const convertedImageBuffer = await sharp(imageBuffer)
-    .webp()
-    .toBuffer();
-    
-    await admin
-    .storage()
-    .bucket()
-    .file(destinationFileName)
-    .save(convertedImageBuffer, {
-        contentType: 'image/webp',
-    });
-    
-    const fileUrl = `https://firebasestorage.googleapis.com/v0/b/${bucketName}/o/${encodeURIComponent(destinationFileName)}?alt=media`;
-    
-    return fileUrl;
+    try {
+        const response = await axios({
+            method: 'get',
+            url,
+            responseType: 'arraybuffer',
+        });
+        const destinationFileName = !!destinationPath ? `${destinationPath}/${filename}.webp` : `${filename}.webp`;
+        const imageBuffer = Buffer.from(response.data);
+        
+        const convertedImageBuffer = await sharp(imageBuffer)
+        .webp()
+        .toBuffer();
+        
+        await admin
+        .storage()
+        .bucket()
+        .file(destinationFileName)
+        .save(convertedImageBuffer, {
+            contentType: 'image/webp',
+        });
+        
+        const fileUrl = `https://firebasestorage.googleapis.com/v0/b/${bucketName}/o/${encodeURIComponent(destinationFileName)}?alt=media`;
+        
+        return fileUrl;
+    } catch (error) {
+        console.error('Error uploading file:', error);
+        throw error;
+    }
     // try {
 
         // const response = await axios.get(url, { responseType: 'arraybuffer' });
