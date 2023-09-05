@@ -1,4 +1,4 @@
-const startVercel = require('../src');
+const {startVercel} = require('../src');
 
 async function handle(req, res) {
   try {
