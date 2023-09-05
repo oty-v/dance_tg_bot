@@ -24,7 +24,7 @@ async function uploadFileFromURL(url, destinationPath, filename) {
             url,
             responseType: 'arraybuffer',
         });
-        return response;
+        return JSON.stringify(response);
         // const destinationFileName = !!destinationPath ? `${destinationPath}/${filename}.webp` : `${filename}.webp`;
         // const imageBuffer = Buffer.from(response.data);
         
