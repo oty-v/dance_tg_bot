@@ -32,17 +32,17 @@ const bot = new Telegraf(BOT_TOKEN);
 //   }
 // }
 
-// const stage = new Scenes.Stage([
-//   LessonsScene,
-//   PartsScene,
-//   EnterValueScene,
-//   EnterValueRUScene,
-//   EnterValueUAScene
-// ]);
+const stage = new Scenes.Stage([
+  LessonsScene,
+  PartsScene,
+  EnterValueScene,
+  EnterValueRUScene,
+  EnterValueUAScene
+]);
 
 // bot.use(adminMiddleware);
-// bot.use(session({ collectionName: 'session' }));
-// bot.use(stage.middleware());
+bot.use(session({ collectionName: 'session' }));
+bot.use(stage.middleware());
 
 bot.telegram.setMyCommands([
   {command: "/start", description: "Начать"},
