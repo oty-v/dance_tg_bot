@@ -64,13 +64,13 @@ try {
 }
 })
 bot.action('end', end)
-// bot.action('create', create)
-// bot.action('edit', edit)
-// bot.action('destroy', destroy)
-// bot.action('about', about)
-// bot.action('lessons', lessons)
-// bot.action('parts', parts)
-// bot.action('skip', skip)
+bot.action('create', create)
+bot.action('edit', edit)
+bot.action('destroy', destroy)
+bot.action('about', about)
+bot.action('lessons', lessons)
+bot.action('parts', parts)
+bot.action('skip', skip)
 
 // Set up webhook to receive updates
 bot.telegram.setWebhook(`${VERCEL_URL}/api`);
