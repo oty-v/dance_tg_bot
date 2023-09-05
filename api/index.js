@@ -13,38 +13,29 @@
 
 // module.exports = handle;
 
-const Telegraf = require('telegraf');
+const { Telegraf } = require('telegraf');
 const { getPageContent } = require('../services/FirebaseController');
 const VERCEL_URL = `${process.env.VERCEL_URL}`;
 const BOT_TOKEN = process.env.BOT_TOKEN || '';
 
-// Initialize Telegraf bot
+// Set up Telegram bot
 const bot = new Telegraf(BOT_TOKEN);
 
-// Configure the Telegram bot command
 bot.command('test', async (ctx) => {
-  const message = ctx.message.text;
-  const data = await getPageContent("about", "ru");
-  ctx.reply(`You said: ${message}. Data from Firebase: ${JSON.stringify(data)}`);
+  try {
+    const data = await getPageContent('about', 'ru');
+    const formattedData = JSON.stringify(data, null, 2);
+    ctx.reply(`Data from Firestore:\n\n${formattedData}`);
+  } catch (error) {
+    console.log('Error:', error);
+    ctx.reply(`Error:\n\n${error}`);
+  }
 });
 
-// Start the bot
-bot.telegram.setWebhook(`${VERCEL_URL}/api/${BOT_TOKEN}`);
+// Set up webhook to receive updates
+bot.telegram.setWebhook(`${VERCEL_URL}/api`);
 
-async function webhookHandler(event) {
-  try {
-    await bot.handleUpdate(event.body);
-    return {
-      statusCode: 200,
-      body: '',
-    };
-  } catch (error) {
-    console.error('Error handling webhook update:', error);
-    return {
-      statusCode: 500,
-      body: 'Error handling webhook update',
-    };
-  }
-}
+// Start listening for incoming updates
+bot.startWebhook('/api', null, 3000); // Replace with the desired port
 
-module.exports = { webhookHandler };
+console.log('Bot is listening...');
