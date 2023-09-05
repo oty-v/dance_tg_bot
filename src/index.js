@@ -63,14 +63,6 @@
 // bot.action('parts', parts)
 // bot.action('skip', skip)
 
-// //prod mode (Vercel)
-// const startVercel = async (req, res) => {
-//   await production(req, res, bot);
-// };
-// //dev mode
-// ENVIRONMENT !== 'production' && development(bot);
-
-// module.exports = {startVercel};
 
 const { Telegraf } = require('telegraf');
 const { getPageContent } = require('../services/FirebaseController');
@@ -102,8 +94,9 @@ bot.command('test', async (ctx) => {
 });
 
 
-// Vercel serverless function for Telegram webhook
-module.exports = async (req, res) => {
+//prod mode (Vercel)
+const startVercel = async (req, res) => {
+  // await production(req, res, bot);
   try {
     await bot.handleUpdate(req.body);
     res.status(200).end();
@@ -112,3 +105,7 @@ module.exports = async (req, res) => {
     res.status(500).end('Internal Server Error');
   }
 };
+//dev mode
+ENVIRONMENT !== 'production' && development(bot);
+
+module.exports = {startVercel};
