@@ -1,103 +1,101 @@
 const { endOptions } = require('../../buttons');
 const { uploadFileFromURL } = require('../../services/FirebaseController');
 
-const enter = (ctx) => {
+const enter = async (ctx) => {
     if (ctx.session.data.next) {
-        ctx.reply('Введите значение')
+        await ctx.reply('Введите значение')
     } else {
-        ctx.editMessageText('Введите значение')
+        await ctx.editMessageText('Введите значение')
     }
 }
 
-const enterRU = (ctx) => {
+const enterRU = async (ctx) => {
     if (ctx.session.data.content_now) {
-        ctx.deleteMessage();
-        ctx.replyWithHTML(ctx.session.data.content_now, endOptions).then(()=>{
-            ctx.reply('Введите значение на русском')
-        }).catch()
+        await ctx.deleteMessage();
+        await ctx.replyWithHTML(ctx.session.data.content_now, endOptions)
+        await ctx.reply('Введите значение на русском')
     } else {
         if (ctx.session.data.next) {
-            ctx.reply('Введите значение на русском')
+            await ctx.reply('Введите значение на русском')
         } else {
-            ctx.editMessageText('Введите значение на русском', endOptions)
+            await ctx.editMessageText('Введите значение на русском', endOptions)
         }
     }
 }
 
-const enterUA = (ctx) => {
+const enterUA = async (ctx) => {
     if (ctx.session.data.next) {
-        ctx.reply('Введите значение на украинском')
+        await ctx.reply('Введите значение на украинском')
     } else {
-        ctx.reply('Введите значение на украинском', endOptions)
+        await ctx.reply('Введите значение на украинском', endOptions)
     }
 }
 
-const value = (ctx) => {
+const value = async (ctx) => {
     ctx.session.data.lang = "ru"
-    ctx.session.data.save(ctx)
-    .then(()=>{
+    await ctx.session.data.save(ctx)
+    .then(async ()=>{
         ctx.session.data.lang = "ua"
-        ctx.session.data.save(ctx)
+        await ctx.session.data.save(ctx)
     })
-    .then(()=>ctx.reply('Изменения приняты'))
-    .then(()=>{
+    .then(async ()=>await ctx.reply('Изменения приняты'))
+    .then(async ()=>{
         if(ctx.session.data.next){
-            ctx.session.data.next(ctx)
+            await ctx.session.data.next(ctx)
         } else {
-            ctx.scene.leave()
+            await ctx.scene.leave()
         }
     })
-    .catch((err)=>{
+    .catch(async (err)=>{
         console.log(err)
-        ctx.reply(`Ошибка: ${err}`, endOptions)
+        await ctx.reply(`Ошибка: ${err}`, endOptions)
     })
 }
 
 const valueRU = async (ctx) => {
     ctx.session.data.lang = "ru";
-    ctx.session.data.save(ctx)
-    .then(()=>ctx.reply('Изменения приняты'))
-    .then(()=>ctx.scene.enter('value_ua'))
-    .catch((err)=>{
+    await ctx.session.data.save(ctx)
+    .then(async ()=>await ctx.reply('Изменения приняты'))
+    .then(async ()=>await ctx.scene.enter('value_ua'))
+    .catch(async (err)=>{
         console.log(err)
-        ctx.reply('Ошибка', endOptions)
+        await ctx.reply('Ошибка', endOptions)
     })
 }
 
 const valueUA = async (ctx) => {
-    const next = ctx.session.data.next ? ctx.session.data.next : ctx.scene.leave;
     ctx.session.data.lang = "ua";
-    ctx.session.data.save(ctx)
-    .then(()=>ctx.reply('Изменения приняты'))
-    .then(()=>{
+    await ctx.session.data.save(ctx)
+    .then(async ()=>await ctx.reply('Изменения приняты'))
+    .then(async ()=>{
         if(ctx.session.data.next){
-            ctx.session.data.next(ctx)
+            await ctx.session.data.next(ctx)
         } else {
-            ctx.scene.leave()
+            await ctx.scene.leave()
         }
     })
-    .catch((err)=>{
+    .catch(async (err)=>{
         console.log(err)
-        ctx.reply('Ошибка', endOptions)
+        await ctx.reply('Ошибка', endOptions)
     })
 }
 
 const document = async (ctx) => {
     if(ctx.session.data.changed_field==='image'){
         if(ctx.update.message.document){
-            const {file_id: fileId} = ctx.update.message.document;
+            const {file_id: fileId} = await ctx.update.message.document;
             const fileUrl = await ctx.telegram.getFileLink(fileId);
-            uploadFileFromURL(fileUrl.href)
-            .then((path)=>{
+            await uploadFileFromURL(fileUrl.href)
+            .then(async (path)=>{
                 ctx.message.text = path;
-                value(ctx);
+                await value(ctx);
             })
             .catch((err)=>{
                 console.log(err);
                 throw err;
             })
         } else {
-            ctx.reply('Отправте картинку без сжатия!')
+            await ctx.reply('Отправте картинку без сжатия!')
         }
     }
   }
