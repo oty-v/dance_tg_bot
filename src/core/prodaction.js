@@ -17,10 +17,9 @@ const production = async (
   }
 
   try {
-    if (req.method === 'POST') {
-      await bot.handleUpdate(req.body, res);
-      res.status(200).end();
-    } else {
+    // Start listening for incoming updates
+    await bot.startWebhook('/api', null, 3000); // Replace with the desired port
+    if (!(req.method === 'POST')) {
       res.status(200).json('Listening to bot events...');
     }
   } catch (error) {
