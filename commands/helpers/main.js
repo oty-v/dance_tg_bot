@@ -38,8 +38,8 @@ const value = async (ctx) => {
         ctx.session.data.lang = "ua"
         await ctx.session.data.save(ctx)
     })
-    .then(async ()=>await ctx.reply('Изменения приняты'))
     .then(async ()=>{
+        await ctx.reply('Изменения приняты')
         if(ctx.session.data.next){
             await ctx.session.data.next(ctx)
         } else {
