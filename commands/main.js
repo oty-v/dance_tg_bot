@@ -39,6 +39,8 @@ const about = async (ctx) => {
                 `<b>На Русском:</b>\n\n<i>${limitStr(content.ru.info, 250)}</i>\n\n`+
                 `<b>На Украинском:</b>\n\n<i>${limitStr(content.ua.info, 250)}</i>`;
         ctx.session.data.save = saveAbout;
+    })
+    .then(async ()=>{
         await ctx.scene.enter('value_ru')
     })
     .catch((err)=>{
