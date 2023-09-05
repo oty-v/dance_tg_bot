@@ -52,7 +52,7 @@ bot.telegram.setMyCommands([
 
 bot.start(start)
 
-// bot.command('end', end)
+bot.command('end', end)
 bot.command('test', async (ctx) => {
 try {
   const data = await getPageContent('about', 'ru');
