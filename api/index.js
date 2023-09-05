@@ -50,7 +50,7 @@ bot.telegram.setMyCommands([
   {command: "/test", description: "Test"}
 ])
 
-// bot.start(start)
+bot.start(start)
 
 // bot.command('end', end)
 bot.command('test', async (ctx) => {
@@ -63,7 +63,7 @@ try {
   ctx.reply('Failed to get data from Firebase.');
 }
 })
-// bot.action('end', end)
+bot.action('end', end)
 // bot.action('create', create)
 // bot.action('edit', edit)
 // bot.action('destroy', destroy)
