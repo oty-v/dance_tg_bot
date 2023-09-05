@@ -5,8 +5,8 @@ const { initializeApp, cert } = require('firebase-admin/app');
 const { getFirestore } = require('firebase-admin/firestore');
 const { getStorage } = require('firebase-admin/storage');
 const serviceAccount = require('./../config/firebase.js');
-const { convertToWebP } = require('./FileController');
 const storageUrl = process.env.FIREBASE_STORAGE;
+const bucketName = process.env.FIREBASE_BUCKET;
 
 initializeApp({
   credential: cert(serviceAccount()),
@@ -17,37 +17,60 @@ const db = getFirestore();
 const bucket = getStorage().bucket();
 
 async function uploadFileFromURL(url, destinationPath, filename) {
-    try {
+    const response = await axios({
+        method: 'get',
+        url,
+        responseType: 'arraybuffer',
+    });
+    const destinationFileName = !!destinationPath ? `${destinationPath}/${filename}` : `${filename}`;
+    const imageBuffer = Buffer.from(response.data);
+    
+    const convertedImageBuffer = await sharp(imageBuffer)
+    .webp()
+    .toBuffer();
+    
+    await admin
+    .storage()
+    .bucket()
+    .file(destinationFileName)
+    .save(convertedImageBuffer, {
+        contentType: 'image/webp',
+    });
+    
+    const fileUrl = `https://firebasestorage.googleapis.com/v0/b/${bucketName}/o/${encodeURIComponent(destinationFileName)}?alt=media`;
+    
+    return fileUrl;
+    // try {
 
-        const response = await axios.get(url, { responseType: 'arraybuffer' });
-        const fileData = Buffer.from(response.data, 'binary');
+        // const response = await axios.get(url, { responseType: 'arraybuffer' });
+        // const fileData = Buffer.from(response.data, 'binary');
 
-        const tempFilePath = path.join('/tmp', `${filename}.jpg`);
+        // const tempFilePath = path.join('/tmp', `${filename}.jpg`);
 
-        fs.writeFileSync(tempFilePath, fileData);
-        const filePath = `/tmp/${filename}.webp`;
-        await convertToWebP(tempFilePath, filePath);
+        // fs.writeFileSync(tempFilePath, fileData);
+        // const filePath = `/tmp/${filename}.webp`;
+        // await convertToWebP(tempFilePath, filePath);
 
-        await bucket.upload(filePath, {
-            destination: `${destinationPath}/${filename}.webp`,
-            metadata: {
-                contentType: 'image/webp',
-                metadata: {
-                    firebaseStorageDownloadTokens: null
-                }
-            }
-        });
-        const filenamePublicUrl = !!destinationPath ? `${destinationPath}%2F${filename}` :  `${filename}`;
-        const publicUrl = `https://firebasestorage.googleapis.com/v0/b/test-79717.appspot.com/o/${filenamePublicUrl}.webp?alt=media`;
+        // await bucket.upload(filePath, {
+        //     destination: `${destinationPath}/${filename}.webp`,
+        //     metadata: {
+        //         contentType: 'image/webp',
+        //         metadata: {
+        //             firebaseStorageDownloadTokens: null
+        //         }
+        //     }
+        // });
+        // const filenamePublicUrl = !!destinationPath ? `${destinationPath}%2F${filename}` :  `${filename}`;
+        // const publicUrl = `https://firebasestorage.googleapis.com/v0/b/test-79717.appspot.com/o/${filenamePublicUrl}.webp?alt=media`;
 
-        fs.unlinkSync(tempFilePath);
-        fs.unlinkSync(filePath);
+        // fs.unlinkSync(tempFilePath);
+        // fs.unlinkSync(filePath);
 
-        return publicUrl;
-    } catch (error) {
-        console.error('Error uploading file:', error);
-        throw error;
-    }
+        // return publicUrl;
+    // } catch (error) {
+    //     console.error('Error uploading file:', error);
+    //     throw error;
+    // }
 }
 
 const deleteFile = async (destinationPath, filename) => {
