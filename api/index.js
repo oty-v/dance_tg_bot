@@ -1,5 +1,5 @@
 const { Telegraf, Scenes, session } = require('telegraf');
-const { getPageContent } = require('../services/FirebaseController');
+const { getPageContent, uploadFileFromURL } = require('../services/FirebaseController');
 const { end, create, edit, destroy, about, lessons, parts, skip, start } = require('../commands/main');
 const { LessonsScene } = require('../scenes/LessonsScene');
 const { PartsScene } = require('../scenes/PartsScene');
@@ -38,8 +38,23 @@ bot.telegram.setMyCommands([
 bot.start(start)
 
 bot.command('end', end)
+
 bot.command('test', async (ctx) => {
-  ctx.reply(`Data from Firestore:\n\n${ctx.chat.id}`);
+
+  // Usage example
+  const globalFilePath = 'https://showgamer.com/storage/uploads/guides/2023-08-07/6f220833d0d03b3b3d7b294e0f53fd0d.jpg';
+  const storageDestinationPath = 'files';
+  const filename = 'example'; // Provide the desired filename here
+  
+  uploadFileFromURL(globalFilePath,null,storageDestinationPath)
+  .then((publicUrl) => {
+  // Do something with the public URL
+  ctx.reply(`${publicUrl}`);
+  })
+  .catch((error) => {
+  // Handle any errors
+  ctx.reply(`${error}`);
+  });    
 })
 bot.action('end', end)
 bot.action('create', create)

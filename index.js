@@ -44,21 +44,6 @@ bot.action('lessons', lessons)
 bot.action('parts', parts)
 bot.action('skip', skip)
 
-bot.command('test', async (ctx) => {
-
-    // Usage example
-    const globalFilePath = 'https://showgamer.com/storage/uploads/guides/2023-08-07/6f220833d0d03b3b3d7b294e0f53fd0d.jpg';
-    const storageDestinationPath = 'files';
-    const filename = 'example'; // Provide the desired filename here
-    
-    deleteFile(storageDestinationPath)
-    .then((publicUrl) => {
-    // Do something with the public URL
-    })
-    .catch((error) => {
-    // Handle any errors
-    });    
-})
 
 bot.launch();
 
