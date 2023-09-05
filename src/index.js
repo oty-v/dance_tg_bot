@@ -4,7 +4,7 @@
 // const { EnterValueScene, EnterValueRUScene, EnterValueUAScene } = require('../scenes/EnterValueScene');
 // const { PartsScene } = require('../scenes/PartsScene');
 // const { LessonsScene } = require('../scenes/LessonsScene');
-// const development = require('./core/development');
+const development = require('./core/development');
 // const production = require('./core/prodaction');
 // const { getPageContent } = require('../services/FirebaseController');
 
@@ -66,6 +66,7 @@
 
 const { Telegraf } = require('telegraf');
 const { getPageContent } = require('../services/FirebaseController');
+const production = require('./core/prodaction');
 require('dotenv').config();
 
 // Initialize Telegraf bot using the Telegram API token
@@ -96,14 +97,7 @@ bot.command('test', async (ctx) => {
 
 //prod mode (Vercel)
 const startVercel = async (req, res) => {
-  // await production(req, res, bot);
-  try {
-    await bot.handleUpdate(req.body);
-    res.status(200).end();
-  } catch (error) {
-    console.log('Error:', error);
-    res.status(500).end('Internal Server Error');
-  }
+  await production(req, res, bot);
 };
 //dev mode
 ENVIRONMENT !== 'production' && development(bot);
