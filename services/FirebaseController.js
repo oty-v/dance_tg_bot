@@ -46,37 +46,6 @@ async function uploadFileFromURL(url, destinationPath, filename) {
         console.error('Error uploading file:', error);
         throw error;
     }
-    // try {
-
-        // const response = await axios.get(url, { responseType: 'arraybuffer' });
-        // const fileData = Buffer.from(response.data, 'binary');
-
-        // const tempFilePath = path.join('/tmp', `${filename}.jpg`);
-
-        // fs.writeFileSync(tempFilePath, fileData);
-        // const filePath = `/tmp/${filename}.webp`;
-        // await convertToWebP(tempFilePath, filePath);
-
-        // await bucket.upload(filePath, {
-        //     destination: `${destinationPath}/${filename}.webp`,
-        //     metadata: {
-        //         contentType: 'image/webp',
-        //         metadata: {
-        //             firebaseStorageDownloadTokens: null
-        //         }
-        //     }
-        // });
-        // const filenamePublicUrl = !!destinationPath ? `${destinationPath}%2F${filename}` :  `${filename}`;
-        // const publicUrl = `https://firebasestorage.googleapis.com/v0/b/test-79717.appspot.com/o/${filenamePublicUrl}.webp?alt=media`;
-
-        // fs.unlinkSync(tempFilePath);
-        // fs.unlinkSync(filePath);
-
-        // return publicUrl;
-    // } catch (error) {
-    //     console.error('Error uploading file:', error);
-    //     throw error;
-    // }
 }
 
 const deleteFile = async (destinationPath, filename) => {
