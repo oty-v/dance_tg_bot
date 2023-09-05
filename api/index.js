@@ -15,7 +15,7 @@
 
 const { Telegraf, Scenes, session } = require('telegraf');
 const { getPageContent } = require('../services/FirebaseController');
-const { end, create, edit, destroy, about, lessons, parts, skip } = require('../commands/main');
+const { end, create, edit, destroy, about, lessons, parts, skip, start } = require('../commands/main');
 const { LessonsScene } = require('../scenes/LessonsScene');
 const { PartsScene } = require('../scenes/PartsScene');
 const { EnterValueScene, EnterValueRUScene, EnterValueUAScene } = require('../scenes/EnterValueScene');
@@ -26,23 +26,23 @@ const BOT_TOKEN = process.env.BOT_TOKEN || '';
 const bot = new Telegraf(BOT_TOKEN);
 
 
-const adminMiddleware = (ctx, next) => {
-  if(ctx.from.id == ADMIN_ID) {
-      next()
-  }
-}
+// const adminMiddleware = (ctx, next) => {
+//   if(ctx.from.id == ADMIN_ID) {
+//       next()
+//   }
+// }
 
-const stage = new Scenes.Stage([
-  LessonsScene,
-  PartsScene,
-  EnterValueScene,
-  EnterValueRUScene,
-  EnterValueUAScene
-]);
+// const stage = new Scenes.Stage([
+//   LessonsScene,
+//   PartsScene,
+//   EnterValueScene,
+//   EnterValueRUScene,
+//   EnterValueUAScene
+// ]);
 
-bot.use(adminMiddleware);
-bot.use(session({ collectionName: 'session' }));
-bot.use(stage.middleware());
+// bot.use(adminMiddleware);
+// bot.use(session({ collectionName: 'session' }));
+// bot.use(stage.middleware());
 
 bot.telegram.setMyCommands([
   {command: "/start", description: "Начать"},
