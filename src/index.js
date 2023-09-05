@@ -8,9 +8,6 @@ const development = require('./core/development');
 const production = require('./core/prodaction');
 const { getPageContent } = require('../services/FirebaseController');
 
-// Enable graceful stop
-process.once('SIGINT', () => bot.stop('SIGINT'));
-process.once('SIGTERM', () => bot.stop('SIGTERM'));
 const BOT_TOKEN = process.env.BOT_TOKEN || '';
 const ENVIRONMENT = process.env.NODE_ENV || '';
 const ADMIN_ID = process.env.ADMIN_ID || '';
