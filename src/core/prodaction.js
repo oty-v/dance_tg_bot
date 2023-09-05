@@ -17,16 +17,16 @@ const production = async (
   }
 
   try {
-    await bot.handleUpdate(req.body);
-    res.status(200).json('Listening to bot events...');
+    if (req.method === 'POST') {
+      await bot.handleUpdate(req.body, res);
+      res.status(200).end();
+    } else {
+      res.status(200).json('Listening to bot events...');
+    }
   } catch (error) {
     console.log('Error:', error);
     res.status(500).end('Internal Server Error');
   }
-  // if (req.method === 'POST') {
-  //   await bot.handleUpdate(req.body, res);
-  // } else {
-  // }
 };
 
 module.exports = production;
