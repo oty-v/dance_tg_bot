@@ -30,18 +30,16 @@ const destroy = async (ctx) => {
     await ctx.editMessageText('Выбери страницу на которой будут происходить изменения', createPagesOptions)
 }
 
-const about = (ctx) => {
+const about = async (ctx) => {
     ctx.session.data.page = 'about';
-    getPageContent('about')
+    await getPageContent('about')
     .then((content)=>{
-        if(!!content) {
-            ctx.session.data.content_now = 
+        ctx.session.data.content_now = 
                 `Информация на данной странице сейчас:\n\n`+
                 `<b>На Русском:</b>\n\n<i>${limitStr(content.ru.info, 250)}</i>\n\n`+
                 `<b>На Украинском:</b>\n\n<i>${limitStr(content.ua.info, 250)}</i>`;
-            ctx.session.data.save = saveAbout;
-            ctx.scene.enter('value_ru')
-        } else {ctx.reply(JSON.stringify(content))}
+        ctx.session.data.save = saveAbout;
+        ctx.scene.enter('value_ru')
     })
     .catch((err)=>{
         ctx.reply(`Ошибка: ${err}`, endOptions);
