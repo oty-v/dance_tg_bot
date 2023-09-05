@@ -16,18 +16,17 @@ const production = async (
     await bot.telegram.setWebhook(`${VERCEL_URL}/api`);
   }
 
-  // try {
-  //   await bot.handleUpdate(req.body);
-  //   res.status(200).end();
-  // } catch (error) {
-  //   console.log('Error:', error);
-  //   res.status(500).end('Internal Server Error');
-  // }
-  if (req.method === 'POST') {
-    await bot.handleUpdate(req.body, res);
-  } else {
+  try {
+    await bot.handleUpdate(req.body);
     res.status(200).json('Listening to bot events...');
+  } catch (error) {
+    console.log('Error:', error);
+    res.status(500).end('Internal Server Error');
   }
+  // if (req.method === 'POST') {
+  //   await bot.handleUpdate(req.body, res);
+  // } else {
+  // }
 };
 
 module.exports = production;
