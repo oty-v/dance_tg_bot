@@ -50,9 +50,9 @@ bot.telegram.setMyCommands([
   {command: "/test", description: "Test"}
 ])
 
-bot.start(start)
+// bot.start(start)
 
-bot.command('end', end)
+// bot.command('end', end)
 bot.command('test', async (ctx) => {
 try {
   const data = await getPageContent('about', 'ru');
@@ -63,14 +63,14 @@ try {
   ctx.reply('Failed to get data from Firebase.');
 }
 })
-bot.action('end', end)
-bot.action('create', create)
-bot.action('edit', edit)
-bot.action('destroy', destroy)
-bot.action('about', about)
-bot.action('lessons', lessons)
-bot.action('parts', parts)
-bot.action('skip', skip)
+// bot.action('end', end)
+// bot.action('create', create)
+// bot.action('edit', edit)
+// bot.action('destroy', destroy)
+// bot.action('about', about)
+// bot.action('lessons', lessons)
+// bot.action('parts', parts)
+// bot.action('skip', skip)
 
 // Set up webhook to receive updates
 bot.telegram.setWebhook(`${VERCEL_URL}/api`);
