@@ -31,7 +31,7 @@ async function uploadFileFromURL(url, destinationPath, filename) {
         .webp()
         .toBuffer();
         
-        await admin
+        await db
         .storage()
         .bucket()
         .file(destinationFileName)
