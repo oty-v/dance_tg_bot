@@ -33,13 +33,13 @@ const destroy = async (ctx) => {
 const about = async (ctx) => {
     ctx.session.data.page = 'about';
     await getPageContent('about')
-    .then((content)=>{
+    .then(async (content)=>{
         ctx.session.data.content_now = 
                 `Информация на данной странице сейчас:\n\n`+
                 `<b>На Русском:</b>\n\n<i>${limitStr(content.ru.info, 250)}</i>\n\n`+
                 `<b>На Украинском:</b>\n\n<i>${limitStr(content.ua.info, 250)}</i>`;
         ctx.session.data.save = saveAbout;
-        ctx.scene.enter('value_ru')
+        await ctx.scene.enter('value_ru')
     })
     .catch((err)=>{
         ctx.reply(`Ошибка: ${err}`, endOptions);
@@ -58,9 +58,9 @@ const parts = async (ctx) => {
 
 const skip = async (ctx) => {
     if(ctx.session.data.next){
-        ctx.session.data.next(ctx)
+        await ctx.session.data.next(ctx)
     } else {
-        ctx.scene.leave()
+        await ctx.scene.leave()
     }
 }
 
