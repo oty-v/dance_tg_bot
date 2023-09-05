@@ -86,7 +86,6 @@ const document = async (ctx) => {
             const {file_id: fileId} = await ctx.update.message.document;
             await ctx.telegram.getFileLink(fileId)
             .then(async (path)=>{
-                ctx.replay(path);
                 ctx.message.text = path;
                 await value(ctx);
             })

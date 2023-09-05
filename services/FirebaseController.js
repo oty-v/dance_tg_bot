@@ -18,6 +18,7 @@ const bucket = getStorage().bucket();
 
 async function uploadFileFromURL(url, destinationPath, filename) {
     try {
+
         const response = await axios.get(url, { responseType: 'arraybuffer' });
         const fileData = Buffer.from(response.data, 'binary');
 
@@ -36,7 +37,7 @@ async function uploadFileFromURL(url, destinationPath, filename) {
                 }
             }
         });
-        const filenamePublicUrl = destinationPath !== '' ? `${destinationPath}%2F${filename}` :  `${filename}`;
+        const filenamePublicUrl = !!destinationPath ? `${destinationPath}%2F${filename}` :  `${filename}`;
         const publicUrl = `https://firebasestorage.googleapis.com/v0/b/test-79717.appspot.com/o/${filenamePublicUrl}.webp?alt=media`;
 
         fs.unlinkSync(tempFilePath);
