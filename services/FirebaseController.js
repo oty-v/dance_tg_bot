@@ -97,7 +97,7 @@ const getPageContent = async (docName, lang) => {
         return res;
     } catch (error) {
         console.error('Error retrieving data:', error);
-        return [];
+        return ["Error"];
     }
 }
 

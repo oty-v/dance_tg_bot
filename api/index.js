@@ -14,7 +14,7 @@ bot.telegram.setMyCommands([
 // Telegram webhook handler
 bot.command('test', async (ctx) => {
   try {
-    const data = await getPageContent('about');
+    const data = await getPageContent('about', 'ru');
     if (data.length > 0) {
       const formattedData = JSON.stringify(data, null, 2);
       ctx.reply(`Data from Firestore:\n\n${formattedData}`);
