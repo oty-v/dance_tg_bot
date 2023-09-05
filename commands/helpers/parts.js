@@ -1,4 +1,4 @@
-const {getSubPageContent, setDataSubCollection, deleteFile} = require("../../services/FirebaseController");
+const {getSubPageContent, setDataSubCollection, deleteFile, uploadFileFromURL} = require("../../services/FirebaseController");
 
 const savePart = async(ctx) => {
     const lang = ctx.session.data.lang;

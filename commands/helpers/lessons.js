@@ -8,6 +8,7 @@ const saveLesson = async(ctx) => {
     const in_cards = ["image", "card_info", "number", "name"];
     const in_list = ["info", "price_info", "price", "time", "name"]
     if (changed_field==='image') {
+        ctx.reply(ctx.message.text);
         await uploadFileFromURL(ctx.message.text, '', lesson_id)
         .then(async (path)=>{
             ctx.message.text = path;
