@@ -58,7 +58,7 @@ const createPart = async(ctx) => {
     return await setDataSubCollection(lang, "lessons", lesson_id, oldContent).then(() => {
         return {
             key: oldContent.parts.length - 1,
-            id: oldContent.parts.id
+            id: part_id
         }
     }).catch((res) => res)
 
