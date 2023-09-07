@@ -19,9 +19,9 @@ const savePart = async(ctx) => {
     const text = ctx.message.text;
     await getSubPageContent('lessons', lesson_id, lang)
     .then(async (oldContent) => {
-        if (!!part_id) {
-            part_key = oldContent.parts.findIndex(item => item.id === part_id);
-        }
+        // if (!!part_id) {
+        //     part_key = oldContent.parts.findIndex(item => item.id === part_id);
+        // }
         if (oldContent.parts[part_key]) {
             oldContent.parts[part_key][changed_field] = text;
             await setDataSubCollection(lang, "lessons", lesson_id, oldContent)
